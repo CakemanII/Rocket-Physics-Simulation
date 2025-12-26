@@ -29,8 +29,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.18, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.29, y: 0.29, z: 0.29}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2452626169883628086}
   m_Father: {fileID: 0}
@@ -81,8 +81,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.6780565, y: 1.2019113, z: 0.65311164}
-  m_Center: {x: -0.0023329407, y: 0.43356472, z: 0.004442245}
+  m_Size: {x: 0.6780565, y: 1.2019113, z: 0.6780565}
+  m_Center: {x: 0, y: 0.43356472, z: 0}
 --- !u!114 &2871660954198807494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,8 +97,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Rocket
   rocketRigidbody: {fileID: 2444799189842796824}
   instantLaunch: 1
+  motorAmount: 5
   launchAngularAcceleration: 0
-  parachuteDragCoefficient: 1.75
+  airResistanceCoefficient: 0.02
+  parachuteDragCoefficient: 0.94
   parachuteDeployVelocity: 0
 --- !u!1001 &4071589983639134013
 PrefabInstance:

@@ -93,7 +93,7 @@ public class Rocket : MonoBehaviour
         // Apply angular acceleration
         if (launchAngularAcceleration != 0f)
         {
-            rocketRigidbody.angularVelocity += Vector3.forward * launchAngularAcceleration * Time.fixedDeltaTime;
+            rocketRigidbody.angularVelocity += transform.up * launchAngularAcceleration * Time.fixedDeltaTime;
         }
 
         // Get thrust from thrust curve
