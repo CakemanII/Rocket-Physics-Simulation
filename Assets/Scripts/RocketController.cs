@@ -94,6 +94,7 @@ public class Rocket : MonoBehaviour
         if (launchAngularAcceleration != 0f)
         {
             rocketRigidbody.angularVelocity += transform.up * launchAngularAcceleration * Time.fixedDeltaTime;
+            Debug.Log(rocketRigidbody.angularVelocity);
         }
 
         // Get thrust from thrust curve
@@ -200,17 +201,14 @@ public class Rocket : MonoBehaviour
     }
 
     #region Getters
-    public float VelocityX() => rocketRigidbody.linearVelocity.x;
-    public float VelocityY() => rocketRigidbody.linearVelocity.y;
-    public float VelocityZ() => rocketRigidbody.linearVelocity.z;
-
-    public float AccelerationX() => acceleration.x;
-    public float AccelerationY() => acceleration.y;
-    public float AccelerationZ() => acceleration.z;
-
-    public bool IsParachuteDeployed() => parachuteDeployed;
-
+    public Vector3 Velocity() => rocketRigidbody.linearVelocity;
+    public Vector3 Acceleration() => acceleration;
     public float CurrentAltitude() => transform.position.y;
+
+    public Vector3 AngularVelocity() => rocketRigidbody.angularVelocity;
+    public Vector3 AngularPosition() => transform.eulerAngles;
+
+    public bool IsParachuteDeployed() => parachuteDeployed;    
 
     public float CurrentThrust()
     {

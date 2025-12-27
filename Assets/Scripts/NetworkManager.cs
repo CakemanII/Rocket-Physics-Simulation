@@ -5,6 +5,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System;
+using System.Data;
+using UnityEngine.Rendering;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
+using System.Linq;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -16,6 +21,13 @@ public class NetworkManager : MonoBehaviour
 
     [Header("Telemetry Sources")]
     public Rocket rocket;
+    
+    [Header("Telemetry Settings")]
+    [SerializeField] private bool sendAcceleration = true;
+    [SerializeField] private bool sendVelocity = true;
+    [SerializeField] private bool sendAngularVelocity = true;
+    [SerializeField] private bool sendAngularPosition = true;
+    [SerializeField] private bool sendAltitude = true;
 
     private void Start()
     {
@@ -33,58 +45,55 @@ public class NetworkManager : MonoBehaviour
 
     void SendTelemetry()
     {
-        // Acceleration
-        var data1 = new RadioSendDataObject
-        {
-            label = "accel",
-            sent_timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000.0d,
-            data = new DataPayload
-            {
-                type = "vector3D",
-                vector3D = new Vector3D
-                {
-                    x = Mathf.Round(rocket.AccelerationX() * 100f) / 100f,
-                    y = Mathf.Round(rocket.AccelerationY() * 100f) / 100f,
-                    z = Mathf.Round(rocket.AccelerationZ() * 100f) / 100f
-                }
-            }
-        };
-        string json1 = JsonUtility.ToJson(data1);
-        StartCoroutine(PostJSON(json1));
+        // Vector3 telemetry
+        var vectorDataTelemetry = new System.Collections.Generic.List<(Vector3, string)>();
+        if (sendAcceleration) vectorDataTelemetry.Add((rocket.Acceleration(), "accel"));
+        if (sendVelocity) vectorDataTelemetry.Add((rocket.Velocity(), "vel"));
+        if (sendAngularVelocity) vectorDataTelemetry.Add((rocket.AngularVelocity(), "ang_vel"));
+        if (sendAngularPosition) vectorDataTelemetry.Add((rocket.AngularPosition(), "ang_pos"));
 
-        // Velocity
-        var data2 = new RadioSendDataObject
-        {   
-            label = "vel",
-            sent_timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000.0d,
-            data = new DataPayload
-            {
-                type = "vector3D",
-                vector3D = new Vector3D
-                {
-                    x = Mathf.Round(rocket.VelocityX() * 100f) / 100f,
-                    y = Mathf.Round(rocket.VelocityY() * 100f) / 100f,
-                    z = Mathf.Round(rocket.VelocityZ() * 100f) / 100f
-                }
-            }
-        };
-        string json2 = JsonUtility.ToJson(data2);
-        StartCoroutine(PostJSON(json2));
-
-        // Altitude
-        var data3 = new RadioSendDataObject
+        for (int i = 0; i < vectorDataTelemetry.Count; i++)
         {
-            label = "dps_alt",
-            sent_timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000.0d,
-            data = new DataPayload
+            var data = new RadioSendDataObject
             {
-                type = "singleValue",
-                singleValue = rocket.CurrentAltitude()
-            }
-        };
-        Debug.Log(data3.data.singleValue);
-        string json3 = JsonUtility.ToJson(data3);
-        StartCoroutine(PostJSON(json3));
+                label = vectorDataTelemetry[i].Item2,
+                sent_timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000.0d,
+                data = new DataPayload
+                {
+                    type = "vector3D",
+                    vector3D = new Vector3D
+                    {
+                        x = Mathf.Round(vectorDataTelemetry[i].Item1.x * 100f) / 100f,
+                        y = Mathf.Round(vectorDataTelemetry[i].Item1.y * 100f) / 100f,
+                        z = Mathf.Round(vectorDataTelemetry[i].Item1.z * 100f) / 100f
+                    }
+                }
+            };
+            string json = JsonUtility.ToJson(data);
+            StartCoroutine(PostJSON(json));
+        }
+
+        // Single value telemetry
+        var singleValueDataTelemetry = new System.Collections.Generic.List<(float, string)>();
+        if (sendAltitude) singleValueDataTelemetry.Add((rocket.CurrentAltitude(), "dps_alt"));
+
+        for (int i = 0; i < singleValueDataTelemetry.Count; i++)
+        {
+            // Altitude
+            var data = new RadioSendDataObject
+            {
+                label = singleValueDataTelemetry[i].Item2,
+                sent_timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000.0d,
+                data = new DataPayload
+                {
+                    type = "singleValue",
+                    singleValue = singleValueDataTelemetry[i].Item1
+                }
+            };
+
+            string json = JsonUtility.ToJson(data);
+            StartCoroutine(PostJSON(json));
+        }
     }
 
     IEnumerator PostJSON(string json)

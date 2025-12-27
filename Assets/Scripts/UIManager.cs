@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour
     {
         timeAndStatusText.text = "Time: " + rocket.TimeSinceInitiated().ToString("F2") + "s\n" +
                                 "Thrust: " + rocket.CurrentThrust().ToString("F2") + " N\n" +
-                                "Velocity: (" + rocket.VelocityX().ToString("F2") + ", " + rocket.VelocityY().ToString("F2") + ", " + rocket.VelocityZ().ToString("F2") + ") m/s\n" +
+                                "Velocity: (" + rocket.Velocity().x.ToString("F2") + ", " + rocket.Velocity().y.ToString("F2") + ", " + rocket.Velocity().z.ToString("F2") + ") m/s\n" +
                                 "Altitude: " + rocket.CurrentAltitude().ToString("F2") + " m\n" +
                                 "Status: " + (rocket.IsParachuteDeployed() ? "Parachute Deployed" : "In Flight");
     }

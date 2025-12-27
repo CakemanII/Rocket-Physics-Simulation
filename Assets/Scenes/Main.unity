@@ -530,6 +530,11 @@ MonoBehaviour:
   serverUrl: http://127.0.0.1:4999
   sendInterval: 0.05
   rocket: {fileID: 393606279}
+  sendAcceleration: 1
+  sendVelocity: 0
+  sendAngularVelocity: 0
+  sendAngularPosition: 0
+  sendAltitude: 0
 --- !u!114 &367559524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1796,7 +1801,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2871660954198807494, guid: c5b042eda63dce54e88b0baf5dfa1566, type: 3}
       propertyPath: launchAngularAcceleration
-      value: 0.1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4565466904468473288, guid: c5b042eda63dce54e88b0baf5dfa1566, type: 3}
       propertyPath: m_Name
