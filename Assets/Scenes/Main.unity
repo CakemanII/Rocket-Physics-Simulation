@@ -531,10 +531,10 @@ MonoBehaviour:
   sendInterval: 0.05
   rocket: {fileID: 393606279}
   sendAcceleration: 1
-  sendVelocity: 0
-  sendAngularVelocity: 0
-  sendAngularPosition: 0
-  sendAltitude: 0
+  sendVelocity: 1
+  sendAngularVelocity: 1
+  sendAngularPosition: 1
+  sendAltitude: 1
 --- !u!114 &367559524
 MonoBehaviour:
   m_ObjectHideFlags: 0

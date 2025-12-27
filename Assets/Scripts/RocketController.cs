@@ -94,7 +94,6 @@ public class Rocket : MonoBehaviour
         if (launchAngularAcceleration != 0f)
         {
             rocketRigidbody.angularVelocity += transform.up * launchAngularAcceleration * Time.fixedDeltaTime;
-            Debug.Log(rocketRigidbody.angularVelocity);
         }
 
         // Get thrust from thrust curve
