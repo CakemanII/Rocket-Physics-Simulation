@@ -1801,7 +1801,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2871660954198807494, guid: c5b042eda63dce54e88b0baf5dfa1566, type: 3}
       propertyPath: launchAngularAcceleration
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4565466904468473288, guid: c5b042eda63dce54e88b0baf5dfa1566, type: 3}
       propertyPath: m_Name
