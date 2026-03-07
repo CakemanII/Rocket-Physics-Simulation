@@ -70,6 +70,13 @@ public class Rocket : MonoBehaviour
 
     void FixedUpdate()
     {
+        // Temp
+        if (parachuteDeployed)
+        {
+            rocketRigidbody.angularVelocity = new Vector3(1f, rocketRigidbody.angularVelocity.y, 1f);
+        }
+
+
         // Calculate current acceleration
         calculateAcceleration();
 
