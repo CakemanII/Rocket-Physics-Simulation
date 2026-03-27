@@ -98,9 +98,9 @@ MonoBehaviour:
   rocketRigidbody: {fileID: 2444799189842796824}
   instantLaunch: 1
   motorAmount: 5
-  launchAngularAcceleration: 0
+  launchAngularAcceleration: 1
   airResistanceCoefficient: 0.02
-  parachuteDragCoefficient: 0.94
+  parachuteDragCoefficient: 0
   parachuteDeployVelocity: 0
 --- !u!1001 &4071589983639134013
 PrefabInstance:

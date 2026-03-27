@@ -10,6 +10,7 @@ using UnityEngine.Rendering;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using System.Linq;
+using System.Collections.Generic;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -29,6 +30,14 @@ public class NetworkManager : MonoBehaviour
     [SerializeField] private bool sendAngularPosition = true;
     [SerializeField] private bool sendAltitude = true;
 
+    [Header("Telemetry IDs")]
+    [SerializeField] private string accelerationId = "accel";
+    [SerializeField] private string velocityId = "vel";
+    [SerializeField] private string angularVelocityId = "ang_vel";
+    [SerializeField] private string angularPositionId = "ang_pos";
+    [SerializeField] private string altitudeId = "dps_alt";
+
+
     private void Start()
     {
         StartCoroutine(SendTelemetryLoop());
@@ -47,10 +56,10 @@ public class NetworkManager : MonoBehaviour
     {
         // Vector3 telemetry
         var vectorDataTelemetry = new System.Collections.Generic.List<(Vector3, string)>();
-        if (sendAcceleration) vectorDataTelemetry.Add((rocket.Acceleration(), "accel"));
-        if (sendVelocity) vectorDataTelemetry.Add((rocket.Velocity(), "vel"));
-        if (sendAngularVelocity) vectorDataTelemetry.Add((rocket.AngularVelocity(), "ang_vel"));
-        if (sendAngularPosition) vectorDataTelemetry.Add((rocket.AngularPosition(), "ang_pos"));
+        if (sendAcceleration) vectorDataTelemetry.Add((rocket.Acceleration(), accelerationId));
+        if (sendVelocity) vectorDataTelemetry.Add((rocket.Velocity(), velocityId));
+        if (sendAngularVelocity) vectorDataTelemetry.Add((rocket.AngularVelocity(), angularVelocityId));
+        if (sendAngularPosition) vectorDataTelemetry.Add((rocket.AngularPosition(), angularPositionId));
 
         for (int i = 0; i < vectorDataTelemetry.Count; i++)
         {
@@ -58,15 +67,11 @@ public class NetworkManager : MonoBehaviour
             {
                 label = vectorDataTelemetry[i].Item2,
                 sent_timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000.0d,
-                data = new DataPayload
+                data = new List<object>
                 {
-                    type = "vector3D",
-                    vector3D = new Vector3D
-                    {
-                        x = Mathf.Round(vectorDataTelemetry[i].Item1.x * 100f) / 100f,
-                        y = Mathf.Round(vectorDataTelemetry[i].Item1.y * 100f) / 100f,
-                        z = Mathf.Round(vectorDataTelemetry[i].Item1.z * 100f) / 100f
-                    }
+                    Mathf.Round(vectorDataTelemetry[i].Item1.x * 100f) / 100f,
+                    Mathf.Round(vectorDataTelemetry[i].Item1.y * 100f) / 100f,
+                    Mathf.Round(vectorDataTelemetry[i].Item1.z * 100f) / 100f
                 }
             };
             string json = JsonUtility.ToJson(data);
@@ -75,7 +80,7 @@ public class NetworkManager : MonoBehaviour
 
         // Single value telemetry
         var singleValueDataTelemetry = new System.Collections.Generic.List<(float, string)>();
-        if (sendAltitude) singleValueDataTelemetry.Add((rocket.CurrentAltitude(), "dps_alt"));
+        if (sendAltitude) singleValueDataTelemetry.Add((rocket.CurrentAltitude(), altitudeId));
 
         for (int i = 0; i < singleValueDataTelemetry.Count; i++)
         {
@@ -84,11 +89,7 @@ public class NetworkManager : MonoBehaviour
             {
                 label = singleValueDataTelemetry[i].Item2,
                 sent_timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000.0d,
-                data = new DataPayload
-                {
-                    type = "singleValue",
-                    singleValue = singleValueDataTelemetry[i].Item1
-                }
+                data = new List<object> { Mathf.Round(singleValueDataTelemetry[i].Item1 * 100f) / 100f }
             };
 
             string json = JsonUtility.ToJson(data);
@@ -117,15 +118,13 @@ public class RadioSendDataObject
 {
     public string label;
     public double sent_timestamp;
-    public DataPayload data;
+    public List<object> data;
 }
 
 [System.Serializable]
 public class DataPayload
 {
-    public string type;
-    public Vector3D vector3D;
-    public float singleValue;
+    public List<float> values;
 }
 
 [System.Serializable]

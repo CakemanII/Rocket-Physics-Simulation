@@ -530,16 +530,11 @@ MonoBehaviour:
   serverUrl: http://127.0.0.1:4999
   sendInterval: 0.05
   rocket: {fileID: 393606279}
-  sendAcceleration: 0
-  sendVelocity: 0
+  sendAcceleration: 1
+  sendVelocity: 1
   sendAngularVelocity: 1
-  sendAngularPosition: 0
-  sendAltitude: 0
-  accelerationId: 
-  velocityId: 
-  angularVelocityId: imu.anv
-  angularPositionId: 
-  altitudeId: 
+  sendAngularPosition: 1
+  sendAltitude: 1
 --- !u!114 &367559524
 MonoBehaviour:
   m_ObjectHideFlags: 0
