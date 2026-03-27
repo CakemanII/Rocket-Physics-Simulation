@@ -67,7 +67,7 @@ public class NetworkManager : MonoBehaviour
             {
                 label = vectorDataTelemetry[i].Item2,
                 sent_timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000.0d,
-                data = new List<object>
+                data = new List<float>
                 {
                     Mathf.Round(vectorDataTelemetry[i].Item1.x * 100f) / 100f,
                     Mathf.Round(vectorDataTelemetry[i].Item1.y * 100f) / 100f,
@@ -89,7 +89,7 @@ public class NetworkManager : MonoBehaviour
             {
                 label = singleValueDataTelemetry[i].Item2,
                 sent_timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000.0d,
-                data = new List<object> { Mathf.Round(singleValueDataTelemetry[i].Item1 * 100f) / 100f }
+                data = new List<float> { Mathf.Round(singleValueDataTelemetry[i].Item1 * 100f) / 100f }
             };
 
             string json = JsonUtility.ToJson(data);
@@ -118,7 +118,7 @@ public class RadioSendDataObject
 {
     public string label;
     public double sent_timestamp;
-    public List<object> data;
+    public List<float> data;
 }
 
 [System.Serializable]
